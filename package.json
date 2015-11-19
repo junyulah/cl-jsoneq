@@ -1,13 +1,12 @@
 {
   "name": "cl-jsoneq",
   "version": "0.0.1",
-  "description": "",
+  "description": "JSON Equal Function",
   "main": "index.js",
   "scripts": {
     "test": "mocha --compilers js:babel-core/register test/**/*.js"
   },
   "dependencies":{
-    "babel-polyfill": "*"
   },
   "devDependencies": {
     "mocha": "*",
