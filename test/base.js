@@ -130,4 +130,39 @@ describe('base', () => {
             done();
         }
     });
+
+    it('arr without order', () => {
+        assert.equal(jsonEq([1, 2, 3], [3, 2, 1], {
+            order: false
+        }), true);
+        assert.equal(jsonEq([1, 2, 3], [1, 2], {
+            order: false
+        }), false);
+
+        assert.equal(jsonEq([
+            [1, 2, 3],
+            [4, 5],
+            [6, 7]
+        ], [
+            [7, 6],
+            [5, 4],
+            [2, 3, 1]
+        ], {
+            order: false
+        }), true);
+
+        assert.equal(jsonEq(
+            [1, 1, 2, 3], [1, 1, 2, 3], {
+                order: false
+            }), true);
+
+        assert.equal(jsonEq(
+            [1, 1, 2, 3], [1, 2, 3], {
+                order: false
+            }), false);
+        assert.equal(jsonEq(
+            [1, 2, 3], [1, 1, 2, 3], {
+                order: false
+            }), false);
+    });
 });

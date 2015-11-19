@@ -1,12 +1,6 @@
-let jsonEq = (json1, json2) => {
+let jsonEq = (json1, json2, opts) => {
     if (sameType(json1, json2) === 'array') {
-        if (json1.length !== json2.length)
-            return false;
-        for (let i = 0; i < json1.length; i++) {
-            if (!jsonEq(json1[i], json2[i]))
-                return false
-        }
-        return true;
+        return eqArr(json1, json2, opts);
     } else if (sameType(json1, json2) === 'map') {
         let keys1 = getKeys(json1);
         let keys2 = getKeys(json2);
@@ -16,12 +10,41 @@ let jsonEq = (json1, json2) => {
             let key = keys1[i];
             if (json2[key] === undefined)
                 return false;
-            if (!jsonEq(json1[key], json2[key]))
+            if (!jsonEq(json1[key], json2[key], opts))
                 return false;
         }
         return true;
     } else if (sameType(json1, json2) === 'atom') {
         return json1 === json2;
+    }
+    return false;
+}
+
+let eqArr = (json1, json2, opts) => {
+    if (json1.length !== json2.length)
+        return false;
+    if (opts.order) {
+        for (let i = 0; i < json1.length; i++) {
+            if (!jsonEq(json1[i], json2[i], opts))
+                return false
+        }
+    } else {
+        for (let i = 0; i < json1.length; i++) {
+            if (!contain(json2, json1[i], opts))
+                return false;
+        }
+        for (let i = 0; i < json2.length; i++) {
+            if (!contain(json1, json2[i], opts))
+                return false;
+        }
+    }
+    return true;
+}
+
+let contain = (list, item, opts) => {
+    for (let i = 0; i < list.length; i++) {
+        if (jsonEq(list[i], item, opts))
+            return true;
     }
     return false;
 }
@@ -59,4 +82,16 @@ let isAtom = v => v === null ||
     typeof v === 'number' ||
     typeof v === 'boolean'
 
-module.exports = jsonEq;
+let merge = (def, opts) => {
+    for (let name in opts) {
+        def[name] = opts[name];
+    }
+    return def;
+}
+
+module.exports = (json1, json2, opts) => {
+    opts = merge({
+        order: true
+    }, opts);
+    return jsonEq(json1, json2, opts);
+};
