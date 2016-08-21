@@ -1,6 +1,6 @@
 {
   "name": "cl-jsoneq",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "JSON Equal Function",
   "main": "index.js",
   "scripts": {
