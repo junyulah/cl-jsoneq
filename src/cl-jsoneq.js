@@ -18,7 +18,7 @@ let jsonEq = (json1, json2, opts) => {
         return json1 === json2;
     }
     return false;
-}
+};
 
 let eqArr = (json1, json2, opts) => {
     if (json1.length !== json2.length)
@@ -26,7 +26,7 @@ let eqArr = (json1, json2, opts) => {
     if (opts.order) {
         for (let i = 0; i < json1.length; i++) {
             if (!jsonEq(json1[i], json2[i], opts))
-                return false
+                return false;
         }
     } else {
         for (let i = 0; i < json1.length; i++) {
@@ -39,7 +39,7 @@ let eqArr = (json1, json2, opts) => {
         }
     }
     return true;
-}
+};
 
 let contain = (list, item, opts) => {
     for (let i = 0; i < list.length; i++) {
@@ -47,7 +47,7 @@ let contain = (list, item, opts) => {
             return true;
     }
     return false;
-}
+};
 
 let getKeys = (map) => {
     if (Object.keys) return Object.keys(map);
@@ -56,38 +56,38 @@ let getKeys = (map) => {
         keys.push(name);
     }
     return keys;
-}
+};
 
 let sameType = (v1, v2) => {
     let type1 = getType(v1);
     let type2 = getType(v2);
     if (type1 === type2)
-        return type1
+        return type1;
     return false;
-}
+};
 
 let getType = (v) => {
     if (isArray(v)) return 'array';
     else if (isMap(v)) return 'map';
     else if (isAtom(v)) return 'atom';
     throw new TypeError('Expect Array or Map or Atom type. Instead got ' + v);
-}
+};
 
 let isArray = v => v && typeof v === 'object' && typeof v.length === 'number';
 
 let isMap = v => v && typeof v === 'object' && typeof v.length !== 'number';
 
-let isAtom = v => v === null ||
+let isAtom = v => !v ||
     typeof v === 'string' ||
     typeof v === 'number' ||
-    typeof v === 'boolean'
+    typeof v === 'boolean';
 
 let merge = (def, opts) => {
     for (let name in opts) {
         def[name] = opts[name];
     }
     return def;
-}
+};
 
 module.exports = (json1, json2, opts) => {
     opts = merge({

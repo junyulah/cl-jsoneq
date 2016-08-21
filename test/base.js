@@ -10,6 +10,7 @@ describe('base', () => {
         assert.equal(jsonEq('abdc', 'abc'), false);
 
         assert.equal(jsonEq(null, null), true);
+        assert.equal(jsonEq(undefined, undefined), true);
 
         assert.equal(jsonEq(true, true), true);
         assert.equal(jsonEq(false, false), true);
@@ -114,15 +115,6 @@ describe('base', () => {
     });
 
     it('exception', (done) => {
-        try {
-            assert.equal(jsonEq(null, undefined), true);
-        } catch (err) {
-            assert.equal(err.toString().indexOf('TypeError') !== -1, true);
-            done();
-        }
-    });
-
-    it('exception2', (done) => {
         try {
             assert.equal(jsonEq(null, function() {}), true);
         } catch (err) {
